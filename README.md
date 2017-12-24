@@ -12,7 +12,8 @@ It contains:
 
 ```
 docker network create -d bridge dev-gateway
-docker network create -d bridge dev-backend```
+docker network create -d bridge dev-backend
+```
 
 Check that the networks exists using `docker network ls`
 
@@ -47,7 +48,8 @@ services:
 networks:
   web:
     external:
-      name: dev-gateway```
+      name: dev-gateway
+```
 
 ### Using docker run
 
@@ -75,4 +77,5 @@ This can be a lot of things. Check `docker logs traefik`.
 
 Chmod for traefik.toml and acme.json must be 600.
 ```
-chmod 600 traefik.toml```
+chmod 600 traefik.toml
+```
