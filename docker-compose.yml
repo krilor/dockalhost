@@ -1,0 +1,33 @@
+version: '2'
+services:
+  proxy:
+    image: traefik
+    command: --web --docker
+    labels:
+      - "traefik.frontend.rule=Host:traefik.docker.localhost"
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/traefik.toml:ro
+    container_name: traefik
+    networks:
+      - web
+  whoami:
+    image: emilevauge/whoami
+    labels:
+      - "traefik.backend=whoami"
+      - "traefik.frontend.rule=Host:whoami.docker.localhost"
+      - "traefik.docker.network=dev-gateway"
+    restart: always
+    networks:
+      - web
+    container_name: whoami
+
+networks:
+  web:
+    external:
+      name: dev-gateway

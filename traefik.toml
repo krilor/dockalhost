@@ -1,0 +1,19 @@
+debug = true
+checkNewVersion = true
+logLevel = "INFO"
+defaultEntryPoints = ["http"]
+
+[web]
+  address = ":8080"
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":80"
+
+[retry]
+
+[docker]
+  endpoint = "unix:///var/run/docker.sock"
+  domain = "docker.localhost"
+  watch = true
+  exposedbydefault = false
