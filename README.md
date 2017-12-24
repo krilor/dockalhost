@@ -54,7 +54,8 @@ networks:
 ### Using docker run
 
 ```
-docker run -d --net dev-gateway -l traefik.backend=hello2 -l traefik.frontend.rule=Host:hello2.docker.localhost -l traefik.enable=true emilevauge/whoami```
+docker run -d --net dev-gateway -l traefik.backend=hello2 -l traefik.frontend.rule=Host:hello2.docker.localhost -l traefik.enable=true emilevauge/whoami
+```
 
 
 
