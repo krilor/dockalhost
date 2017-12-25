@@ -26,8 +26,31 @@ services:
     networks:
       - web
     container_name: whoami
+  maria:
+    image: mariadb
+    restart: always
+    labels:
+      - "traefik.enable=false"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - backend
+  adminer:
+    image: adminer
+    restart: always
+    labels:
+      - "traefik.frontend.rule=Host:adminer.docker.localhost"
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - "traefik.docker.network=dev-gateway"
+    networks:
+      - backend
+      - web
 
 networks:
   web:
     external:
       name: dev-gateway
+  backend:
+    external:
+      name: dev-backend

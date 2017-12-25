@@ -5,6 +5,8 @@ It contains:
 
 * træfic - reverse proxy for my `docker.localhost` hostname
 * whoami - just to verify that everything is running
+* mariadb - because everybody needs a db
+* adminer - to admin the db
 
 ## Getting started
 
@@ -70,13 +72,19 @@ docker run -d --net dev-gateway -l traefik.backend=hello2 -l traefik.frontend.ru
 
 To make the web browser recognize the string as a hostname (not a search term), append an `/` at the en of it. This is a known issue.
 
-## Traefik does not start
+### Traefik does not start
 
 This can be a lot of things. Check `docker logs traefik`.
 
-### Chmod?
+#### Chmod?
 
 Chmod for traefik.toml and acme.json must be 600.
 ```
 chmod 600 traefik.toml
 ```
+
+### Attaching to mariadb does not work
+
+`docker exec -it dockalhost_maria_1 bash`
+
+See [https://stackoverflow.com/questions/35573698/why-does-docker-attach-hang](StackOverflow). This will give you the shell of the mariadb container.
