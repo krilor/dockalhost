@@ -12,7 +12,7 @@ services:
       - "80:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./traefik.toml:/traefik.toml:ro
+      - ./traefik/traefik.toml:/traefik.toml:ro
     container_name: traefik
     networks:
       - web
@@ -29,10 +29,15 @@ services:
   maria:
     image: mariadb
     restart: always
+    volumes:
+      - mariadata:/var/lib/mysql
     labels:
       - "traefik.enable=false"
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wp
+      MYSQL_USER: wp
+      MYSQL_PASSWORD: dev
     networks:
       - backend
   adminer:
@@ -46,6 +51,24 @@ services:
     networks:
       - backend
       - web
+  wp:
+    image: wordpress
+    labels:
+      - "traefik.frontend.rule=Host:wp.docker.localhost"
+      - "traefik.enable=true"
+      - "traefik.docker.network=dev-gateway"
+    networks:
+      - backend
+      - web
+    volumes:
+      - ./wordpress:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: maria
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: dev
+      WORDPRESS_DB_NAME: wp
+      WORDPRESS_TABLE_PREFIX: wp
+
 
 networks:
   web:
@@ -54,3 +77,6 @@ networks:
   backend:
     external:
       name: dev-backend
+
+volumes:
+  mariadata:
